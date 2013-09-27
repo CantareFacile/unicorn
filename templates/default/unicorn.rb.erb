@@ -6,8 +6,8 @@ worker_processes '<%= @worker_processes %>'.to_i
 
 working_directory "<%= @working_directory %>"
 
-listen "/tmp/unicorn.sock"
-timeout 30
+listen "<%= @socket %>"
+timeout <%= @worker_timeout %>
 
 pid "<%= @pid %>"
 stderr_path "<%= @stderr_path %>"

@@ -18,26 +18,27 @@
 # limitations under the License.
 #
 
-define :unicorn_config, 
-    :listen               => nil, 
+define :unicorn_config,
+    :listen               => nil,
     :working_directory    => nil,
-    :worker_timeout       => 60, 
-    :preload_app          => false, 
+    :worker_timeout       => 30,
+    :preload_app          => false,
     :worker_processes     => 4,
-    :unicorn_command_line => nil, 
-    :forked_user          => nil, 
-    :forked_group         => nil, 
+    :unicorn_command_line => nil,
+    :socket               => nil,
+    :forked_user          => nil,
+    :forked_group         => nil,
     :pid                  => nil,
     :before_exec          => nil,
-    :before_fork          => nil, 
-    :after_fork           => nil, 
+    :before_fork          => nil,
+    :after_fork           => nil,
     :stderr_path          => nil,
-    :stdout_path          => nil, 
-    :notifies             => nil, 
-    :owner                => nil, 
+    :stdout_path          => nil,
+    :notifies             => nil,
+    :owner                => nil,
     :group                => nil,
-    :mode                 => nil, 
-    :copy_on_write        => false, 
+    :mode                 => nil,
+    :copy_on_write        => false,
     :enable_stats         => false do
 
   config_dir = File.dirname(params[:name])
@@ -55,7 +56,7 @@ define :unicorn_config,
     end
     tvars[:listen][port] = oarray.join(", ")
   end
-  
+
   template params[:name] do
     source "unicorn.rb.erb"
     cookbook "unicorn"
@@ -66,7 +67,7 @@ define :unicorn_config,
     variables params
     notifies *params[:notifies] if params[:notifies]
   end
-  
+
   # If the user set a group for forked processes but not a user, warn them that
   # we did not set the group. Unicorn does not allow you to drop privileges at
   # the group level only.
