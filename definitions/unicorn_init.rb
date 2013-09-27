@@ -5,12 +5,19 @@ define :unicorn_init,
     :rails_env    => nil,
     :unicorn_user => nil  do
 
+  service "#{params[:name]}_unicorn" do
+    supports restart: true, start: true, stop: true, reload: true
+    action :nothing
+  end
+
   template "/etc/init.d/#{params[:name]}_unicorn" do
     source "unicorn_init.sh.erb"
     cookbook "unicorn"
     owner 'root'
     group 'root'
-    mode '755'
+    mode '0755'
     variables params
+    notifies :enable, "service[#{params[:name]}_unicorn]"
+    notifies :start, "service[#{params[:name]}_unicorn]"
   end
 end
