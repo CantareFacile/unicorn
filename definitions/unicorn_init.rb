@@ -17,7 +17,5 @@ define :unicorn_init,
     group 'root'
     mode '0755'
     variables params
-    notifies :enable, "service[#{params[:name]}_unicorn]"
-    notifies :start, "service[#{params[:name]}_unicorn]"
   end
 end
